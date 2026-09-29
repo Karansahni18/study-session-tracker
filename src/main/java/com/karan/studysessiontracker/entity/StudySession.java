@@ -13,7 +13,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 @Entity 
+@Getter
+@Setter 
+@NoArgsConstructor 
+@AllArgsConstructor
 @Table(
     name = "study_session",
     indexes = @Index(name = "idx_session_user_date", columnList = "user_id, session_date" )
