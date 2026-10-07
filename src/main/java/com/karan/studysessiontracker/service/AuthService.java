@@ -10,6 +10,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.karan.studysessiontracker.exception.DuplicateResourceException;
+
 
 @Service
 public class AuthService {
@@ -31,7 +33,7 @@ public class AuthService {
     public AuthResponse register(RegisterRequest request) {
         
         if(userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new RuntimeException("Username is already taken");
+            throw new DuplicateResourceException("Username is already taken");
         }
 
         User user = new User();

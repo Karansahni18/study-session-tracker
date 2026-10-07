@@ -6,6 +6,8 @@ import com.karan.studysessiontracker.repository.StudySessionRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.karan.studysessiontracker.exception.ResourceNotFoundException;
+import com.karan.studysessiontracker.exception.UnauthorizedAccessException;
 
 @Service
 public class StudySessionService {
@@ -27,10 +29,10 @@ public class StudySessionService {
     public StudySession getSessionByIdForUser(Long sessionId, User user) {
 
         StudySession session = studySessionRepository.findById(sessionId)
-        .orElseThrow(() -> new RuntimeException("Session not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Session not found"));
 
         if(!session.getUser().getId().equals(user.getId())) {
-            throw new RuntimeException("You do not have permission to access this session");
+            throw new UnauthorizedAccessException("You do not have permission to access this session");
         }
 
         return session;
