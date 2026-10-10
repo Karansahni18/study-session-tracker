@@ -4,6 +4,8 @@ import com.karan.studysessiontracker.entity.Subject;
 import com.karan.studysessiontracker.entity.User;
 import com.karan.studysessiontracker.repository.SubjectRepository;
 import org.springframework.stereotype.Service;
+import com.karan.studysessiontracker.exception.ResourceNotFoundException;
+import com.karan.studysessiontracker.exception.UnauthorizedAccessException;
 
 import java.util.List;
 
@@ -24,5 +26,15 @@ public class SubjectService {
         return subjectRepository.findByUser(user);
     }
 
-    
+    public Subject getSubjectByIdForUser(Long subjectId, User user) {
+
+        Subject subject = subjectRepository.findById(subjectId)
+        .orElseThrow(() -> new ResourceNotFoundException("Subject not found"));
+
+        if(!subject.getUser().getId().equals(user.getId())) {
+            throw new UnauthorizedAccessException("You do not have permission to use this subject");
+        }
+
+        return subject;
+    }
 }
