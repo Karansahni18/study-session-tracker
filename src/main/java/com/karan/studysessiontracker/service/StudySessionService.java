@@ -23,7 +23,7 @@ public class StudySessionService {
     }
 
     public Page<StudySession> getSessionsForUser(User user, Pageable pageable) {
-        return studySessionRepository.findByUserOrderBySessionDateDesc(user, pageable);
+        return studySessionRepository.findByUserOrderBySessionDateDescIdDesc(user, pageable);
     }
 
     public StudySession getSessionByIdForUser(Long sessionId, User user) {

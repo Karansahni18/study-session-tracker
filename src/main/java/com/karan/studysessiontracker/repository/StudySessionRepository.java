@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.EntityGraph;
 public interface StudySessionRepository extends JpaRepository<StudySession, Long> {
 
     @EntityGraph(attributePaths = "subject")
-    Page<StudySession> findByUserOrderBySessionDateDesc(User user, Pageable pageable);
+    Page<StudySession> findByUserOrderBySessionDateDescIdDesc(User user, Pageable pageable);
     
 }
