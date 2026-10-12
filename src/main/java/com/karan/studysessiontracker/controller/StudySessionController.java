@@ -101,4 +101,27 @@ public class StudySessionController {
                 s.getSubject().getName());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<StudySessionResponse> updateSession(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long id,
+            @Valid @RequestBody StudySessionRequest request) {
+
+        User user = getCurrentUser(userDetails);
+        Subject subject = subjectService.getSubjectByIdForUser(request.getSubjectId(), user);
+
+        StudySession updated = studySessionService.updateSession(id, user, subject, request);
+        return ResponseEntity.ok(toResponse(updated));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSession(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable Long id) {
+
+        User user = getCurrentUser(userDetails);
+        studySessionService.deleteSession(id, user);
+        return ResponseEntity.noContent().build();
+    }
+
 }

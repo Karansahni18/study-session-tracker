@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.karan.studysessiontracker.exception.ResourceNotFoundException;
 import com.karan.studysessiontracker.exception.UnauthorizedAccessException;
+import com.karan.studysessiontracker.dto.request.StudySessionRequest;
+import com.karan.studysessiontracker.entity.Subject;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StudySessionService {
@@ -36,5 +39,24 @@ public class StudySessionService {
         }
 
         return session;
+    }
+
+    @Transactional
+    public StudySession updateSession(Long sessionId, User user, Subject subject, StudySessionRequest request) {
+        StudySession session = getSessionByIdForUser(sessionId, user);
+
+        session.setTopic(request.getTopic());
+        session.setDurationMinutes(request.getDurationMinutes());
+        session.setSessionDate(request.getSessionDate());
+        session.setNotes(request.getNotes());
+        session.setSubject(subject);
+
+        return studySessionRepository.save(session);
+    }
+
+    @Transactional
+    public void deleteSession(Long sessionId, User user) {
+        StudySession session = getSessionByIdForUser(sessionId, user);
+        studySessionRepository.delete(session);
     }
 }
