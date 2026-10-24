@@ -10,6 +10,7 @@ A Spring Boot REST API for logging and managing study sessions. Users register a
 - Request validation (Bean Validation) and centralized error handling with clear JSON error responses
 - MySQL persistence with Spring Data JPA and Hibernate, a composite index on `(user_id, session_date)`, and paginated reads that avoid N+1 queries
 - Unit tests for the service layer with JUnit and Mockito
+- Interactive API documentation with Swagger UI (OpenAPI), including a JWT Authorize button
 
 ## Tech Stack
 
@@ -19,6 +20,7 @@ A Spring Boot REST API for logging and managing study sessions. Users register a
 - Hibernate and MySQL 8
 - Maven (wrapper included)
 - JUnit 6 (Jupiter) and Mockito 5
+- springdoc-openapi 3.0 (Swagger UI)
 
 ## Project Structure
 
@@ -26,6 +28,7 @@ A Spring Boot REST API for logging and managing study sessions. Users register a
 src/
   main/
     java/com/karan/studysessiontracker/
+      config/       OpenAPI (Swagger) configuration
       controller/   REST controllers (auth, subjects, sessions)
       dto/          request and response objects
       entity/       JPA entities (User, Subject, StudySession)
@@ -131,6 +134,16 @@ The API starts on `http://localhost:8080`.
 
 Protected endpoints expect the header `Authorization: Bearer <token>`. Tokens are valid for 24 hours.
 
+### Interactive documentation (Swagger UI)
+
+With the app running, open `http://localhost:8080/swagger-ui/index.html`. To try the protected endpoints:
+
+1. Call `POST /api/auth/register` or `POST /api/auth/login` and copy the `token` value from the response.
+2. Click **Authorize**, paste the token (without the `Bearer ` prefix) and confirm.
+3. Use **Try it out** on any endpoint.
+
+The raw OpenAPI description is available at `/v3/api-docs`.
+
 ### Example requests
 
 `POST /api/auth/register`
@@ -229,7 +242,6 @@ The 13 unit tests cover the service layer (ownership checks, registration, login
 
 ## Future Improvements
 
-- API documentation with OpenAPI/Swagger
 - Docker support for the application and database
 - Update and delete for subjects
 - Integration tests for the controllers and security rules
